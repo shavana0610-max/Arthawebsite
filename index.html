@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Artha — Your Financial Home Base</title>
+<meta name="description" content="Artha is India's first teen fintech — savings goals, squad challenges, expense splitting, and micro-investing. All in one app."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0A0A0F;--bg2:#0F0F17;--bg3:#13131E;
+  --surface:#1A1A28;--surface2:#22223A;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --orange:#F97316;--orange2:#FB923C;--orange-dim:#7C3910;
+  --orange-glow:rgba(249,115,22,0.18);
+  --blue:#6366F1;--blue-dim:rgba(99,102,241,0.15);--teal:#14B8A6;
+  --text:#F1F0FF;--text2:#9997B8;--text3:#5E5C80;
+  --fd:'Syne',sans-serif;--fb:'Manrope',sans-serif;--fm:'DM Mono',monospace;
+  --r:12px;--rl:20px;--rxl:28px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:99px;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px;background:rgba(10,10,15,0.85);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);transition:border-color 0.3s;}
+nav.scrolled{border-color:var(--border2);}
+.nav-logo{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.5px;display:flex;align-items:center;gap:8px;}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 8px var(--orange);animation:breathe 3s ease-in-out infinite;}
+@keyframes breathe{0%,100%{box-shadow:0 0 6px var(--orange),0 0 14px var(--orange-glow);}50%{box-shadow:0 0 16px var(--orange),0 0 32px var(--orange-glow);}}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--text2);text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{background:var(--orange);color:#fff;font-family:var(--fd);padding:9px 20px;border-radius:99px;font-size:14px;font-weight:700;text-decoration:none;transition:transform 0.15s,box-shadow 0.2s;letter-spacing:0.02em;}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 0 22px rgba(249,115,22,0.45);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.028) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 100%);}
+.hero-glow{position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:900px;height:600px;z-index:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(249,115,22,0.12) 0%,transparent 65%);}
+.hero-glow2{position:absolute;bottom:0;right:-10%;width:500px;height:400px;z-index:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(99,102,241,0.08) 0%,transparent 65%);}
+.hero-pixels{position:absolute;inset:0;z-index:1;pointer-events:auto;filter:url(#goo-hero);}
+.px{position:absolute;opacity:0;background:var(--orange);border-radius:3px;will-change:opacity;}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(249,115,22,0.08);border:0.5px solid rgba(249,115,22,0.3);padding:6px 16px;border-radius:99px;font-size:12px;font-weight:600;color:var(--orange2);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:28px;position:relative;z-index:2;}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);animation:breathe 2s ease-in-out infinite;}
+
+.hero h1{font-family:var(--fd);font-size:clamp(52px,9vw,96px);font-weight:800;line-height:1.0;letter-spacing:-3px;color:var(--text);max-width:960px;margin:0 auto 24px;position:relative;z-index:2;}
+.hero h1 .o{color:var(--orange);}
+.hero h1 .d{color:var(--text3);}
+.hero-sub{font-size:clamp(16px,2vw,19px);color:var(--text2);font-weight:400;max-width:520px;line-height:1.7;margin:0 auto 44px;position:relative;z-index:2;}
+.hero-ctas{display:flex;align-items:center;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+
+.btn-p{background:var(--orange);color:#fff;font-family:var(--fd);padding:14px 32px;border-radius:99px;font-size:16px;font-weight:700;text-decoration:none;transition:transform 0.15s,box-shadow 0.2s;display:inline-flex;align-items:center;gap:8px;letter-spacing:0.02em;}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(249,115,22,0.4);}
+.btn-s{background:transparent;color:var(--text);padding:13px 28px;border-radius:99px;font-size:16px;font-weight:500;text-decoration:none;border:0.5px solid var(--border2);transition:background 0.15s,border-color 0.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-s:hover{background:var(--surface);border-color:rgba(255,255,255,0.2);}
+
+/* TICKER */
+.hero-ticker{position:relative;z-index:2;margin-top:64px;display:flex;align-items:center;overflow:hidden;width:100%;max-width:680px;border:0.5px solid var(--border);border-radius:var(--r);background:var(--surface);}
+.tick-lbl{padding:0 16px;font-family:var(--fm);font-size:11px;color:var(--orange);font-weight:500;white-space:nowrap;border-right:0.5px solid var(--border);letter-spacing:0.05em;height:40px;display:flex;align-items:center;}
+.tick-track{flex:1;overflow:hidden;height:40px;display:flex;align-items:center;}
+.tick-inner{display:flex;gap:40px;white-space:nowrap;animation:scroll 18s linear infinite;}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.tick-item{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:12px;color:var(--text2);}
+.tick-item .up{color:#22C55E;}
+
+/* MARQUEE */
+.marquee{padding:18px 0;background:var(--bg2);border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);overflow:hidden;}
+.mq-inner{display:flex;gap:56px;white-space:nowrap;animation:scroll 22s linear infinite;}
+.mq-item{font-family:var(--fd);font-size:12px;font-weight:700;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;display:flex;align-items:center;gap:14px;}
+.mq-item::after{content:'✦';color:var(--orange);font-size:9px;}
+
+/* SECTION UTILS */
+.wrap{max-width:1280px;margin:0 auto;padding:0 5%;}
+.sp{padding:100px 0;}
+.etag{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;font-weight:500;color:var(--orange);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;}
+.etag::before{content:'';width:20px;height:1px;background:var(--orange);}
+.sh2{font-family:var(--fd);font-size:clamp(36px,5vw,58px);font-weight:800;color:var(--text);line-height:1.05;letter-spacing:-1.5px;margin-bottom:16px;}
+.sh2 .o{color:var(--orange);}
+.sh2 .d{color:var(--text3);}
+.ssub{font-size:17px;color:var(--text2);max-width:520px;line-height:1.7;font-weight:300;}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-top:56px;}
+.step{background:var(--bg2);padding:40px 32px;display:flex;flex-direction:column;gap:20px;transition:background 0.2s;position:relative;overflow:hidden;}
+.step:hover{background:var(--bg3);}
+.step::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform 0.3s ease;}
+.step:hover::before{transform:scaleX(1);}
+.snum{font-family:var(--fm);font-size:11px;color:var(--orange);letter-spacing:0.1em;}
+.sico{width:48px;height:48px;border-radius:var(--r);background:var(--surface);border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.step h3{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.3px;}
+.step p{font-size:14px;color:var(--text2);line-height:1.7;font-weight:300;}
+
+/* BENTO */
+.bento-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:56px;}
+.bento{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:32px;position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.2s;}
+.bento:hover{border-color:var(--border2);transform:translateY(-2px);}
+.bento::after{content:'';position:absolute;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,0.06) 0%,transparent 70%);bottom:-40px;right:-40px;pointer-events:none;}
+.b1{grid-column:span 7;}.b2{grid-column:span 5;}.b3{grid-column:span 4;}.b4{grid-column:span 4;}.b5{grid-column:span 4;}.b6{grid-column:span 6;}.b7{grid-column:span 6;}
+@media(max-width:900px){.b1,.b2,.b3,.b4,.b5,.b6,.b7{grid-column:span 12;}}
+.bico{width:44px;height:44px;border-radius:12px;background:var(--orange-glow);border:0.5px solid rgba(249,115,22,0.25);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:20px;}
+.bento h3{font-family:var(--fd);font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:10px;}
+.bento p{font-size:14px;color:var(--text2);line-height:1.7;font-weight:300;}
+
+/* PHONE MOCK */
+.phone-mock{width:140px;height:260px;background:var(--bg3);border-radius:22px;border:0.5px solid var(--border2);position:relative;overflow:hidden;margin:20px auto 0;flex-shrink:0;}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:16px;background:var(--bg);border-radius:0 0 12px 12px;}
+.phone-body{padding:26px 12px 12px;}
+.bal-card{background:var(--surface);border-radius:12px;padding:12px;border:0.5px solid var(--border2);margin-bottom:8px;}
+.bal-lbl{font-family:var(--fm);font-size:9px;color:var(--text3);letter-spacing:0.08em;}
+.bal-num{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--text);}
+.stat-row{display:flex;gap:6px;margin-top:8px;}
+.stat-chip{flex:1;background:var(--bg);border-radius:6px;padding:5px 4px;text-align:center;border:0.5px solid var(--border);}
+.stat-chip .sv{font-size:9px;font-weight:700;color:var(--orange);font-family:var(--fm);}
+.stat-chip .sl{font-size:8px;color:var(--text3);}
+.gbar{margin-top:8px;}
+.gbar-row{display:flex;justify-content:space-between;font-size:9px;color:var(--text2);margin-bottom:3px;}
+.bar-t{height:4px;background:var(--surface2);border-radius:99px;overflow:hidden;}
+.bar-f{height:100%;border-radius:99px;background:var(--orange);}
+
+/* LEADERBOARD */
+.lb{display:flex;flex-direction:column;gap:8px;margin-top:20px;}
+.lb-row{display:flex;align-items:center;gap:10px;background:var(--bg3);border-radius:10px;padding:10px 12px;border:0.5px solid var(--border);}
+.lb-rank{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:12px;font-weight:800;}
+.r1{background:rgba(251,191,36,0.15);color:#FBBF24;}.r2{background:var(--orange-glow);color:var(--orange);}.r3{background:var(--surface2);color:var(--text3);}
+.lb-name{flex:1;font-size:13px;font-weight:500;color:var(--text);}
+.lb-amt{font-family:var(--fm);font-size:13px;color:var(--orange);font-weight:500;}
+
+/* COMMUNITY */
+.comm-sec{padding:100px 5%;background:var(--bg2);border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);}
+.comm-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+@media(max-width:768px){.comm-grid{grid-template-columns:1fr;}}
+.squad-card{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--rxl);overflow:hidden;}
+.squad-hdr{padding:20px 24px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.squad-title{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--text);}
+.squad-badge{background:rgba(249,115,22,0.15);color:var(--orange2);border:0.5px solid rgba(249,115,22,0.3);font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;font-family:var(--fm);letter-spacing:0.05em;}
+.squad-body{padding:20px 24px;display:flex;flex-direction:column;gap:10px;}
+.squad-mem{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;transition:background 0.15s;}
+.squad-mem:hover,.squad-mem.me{background:var(--surface);}
+.mem-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.ava{background:#F97316;}.avb{background:#6366F1;}.avc{background:#14B8A6;}.avd{background:#F59E0B;}.ave{background:#EC4899;}
+.mem-info{flex:1;}
+.mem-name{font-size:13px;font-weight:500;color:var(--text);}
+.mem-bar{height:3px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-top:4px;}
+.mem-fill{height:100%;border-radius:99px;background:var(--orange);}
+.mem-amt{font-family:var(--fm);font-size:13px;color:var(--orange);font-weight:500;}
+
+/* SPLIT */
+.split-card{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--rxl);overflow:hidden;margin-top:16px;}
+.split-hdr{padding:20px 24px;border-bottom:0.5px solid var(--border);}
+.split-hdr h4{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--text);}
+.split-hdr p{font-size:12px;color:var(--text3);margin-top:2px;}
+.split-body{padding:16px 24px;display:flex;flex-direction:column;gap:10px;}
+.split-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:10px;border:0.5px solid var(--border);}
+.split-left{display:flex;align-items:center;gap:10px;}
+.split-em{font-size:18px;}
+.split-name{font-size:13px;font-weight:500;color:var(--text);}
+.split-sub{font-size:11px;color:var(--text3);}
+.green-amt{font-family:var(--fm);font-size:13px;color:#22C55E;font-weight:600;}
+.red-amt{font-family:var(--fm);font-size:13px;color:#EF4444;font-weight:600;}
+.sum-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.sum-chip{border-radius:10px;padding:14px;text-align:center;}
+.sg{background:rgba(34,197,94,0.08);border:0.5px solid rgba(34,197,94,0.2);}
+.sr{background:rgba(239,68,68,0.08);border:0.5px solid rgba(239,68,68,0.2);}
+.sum-lbl{font-size:11px;font-weight:500;margin-bottom:4px;}
+.sg .sum-lbl{color:#22C55E;}.sr .sum-lbl{color:#EF4444;}
+.sum-amt{font-family:var(--fd);font-size:22px;font-weight:800;}
+.sg .sum-amt{color:#22C55E;}.sr .sum-amt{color:#EF4444;}
+
+/* INVEST */
+.inv-sec{padding:100px 5%;position:relative;overflow:hidden;}
+.inv-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 100%,rgba(99,102,241,0.08) 0%,transparent 70%);pointer-events:none;}
+.inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;max-width:1280px;margin:0 auto;}
+@media(max-width:768px){.inv-grid{grid-template-columns:1fr;}}
+.ret-card{margin-top:40px;background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--rl);padding:28px;position:relative;overflow:hidden;}
+.ret-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange),var(--blue),transparent);}
+.ret-num{font-family:var(--fd);font-size:48px;font-weight:800;color:var(--text);letter-spacing:-2px;}
+.ret-num span{color:var(--orange);}
+.ret-lbl{font-size:13px;color:var(--text3);margin-top:4px;font-family:var(--fm);}
+.ret-bar{margin-top:20px;height:6px;background:var(--surface2);border-radius:99px;overflow:hidden;}
+.ret-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--orange),var(--blue));width:72%;}
+.fund-list{display:flex;flex-direction:column;gap:12px;margin-top:40px;}
+.fund-row{display:flex;align-items:center;gap:16px;background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r);padding:16px 20px;transition:border-color 0.2s,background 0.2s;}
+.fund-row:hover{border-color:var(--border2);background:var(--bg3);}
+.fund-ico{width:44px;height:44px;border-radius:12px;background:var(--surface);border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.fund-info{flex:1;}
+.fn{font-size:15px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.ft{font-size:12px;color:var(--text3);}
+.ret-badge{background:rgba(34,197,94,0.1);color:#22C55E;border:0.5px solid rgba(34,197,94,0.2);font-family:var(--fm);font-size:13px;font-weight:600;padding:4px 10px;border-radius:99px;}
+.rdots{display:flex;gap:3px;margin-top:6px;}
+.rd{width:6px;height:6px;border-radius:50%;background:var(--surface2);}
+.rd.on{background:var(--orange);}
+.sebi{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-top:16px;font-family:var(--fm);font-size:11px;color:var(--text3);line-height:1.6;}
+
+/* TESTIMONIALS */
+.test-sec{padding:100px 5%;background:var(--bg2);border-top:0.5px solid var(--border);}
+.test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:56px;}
+.test-card{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--rl);padding:28px;transition:border-color 0.2s,transform 0.2s;position:relative;overflow:hidden;}
+.test-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.test-card::before{content:'"';position:absolute;top:-10px;left:20px;font-family:var(--fd);font-size:100px;color:rgba(249,115,22,0.06);font-weight:900;line-height:1;}
+.test-stars{color:var(--orange);font-size:13px;margin-bottom:16px;}
+.test-text{font-size:15px;color:var(--text);line-height:1.75;font-weight:300;margin-bottom:24px;font-style:italic;}
+.test-author{display:flex;align-items:center;gap:12px;}
+.t-av{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;}
+.t-name{font-size:14px;font-weight:600;color:var(--text);}
+.t-role{font-size:12px;color:var(--text3);margin-top:1px;}
+
+/* WAITLIST */
+.wl-sec{padding:120px 5%;text-align:center;position:relative;overflow:hidden;}
+.wl-sec::before{content:'';position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(249,115,22,0.1) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 20% 100%,rgba(99,102,241,0.06) 0%,transparent 60%);pointer-events:none;}
+.wl-inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
+.wl-sec h2{font-family:var(--fd);font-size:clamp(40px,6vw,72px);font-weight:800;color:var(--text);letter-spacing:-2px;line-height:1.0;margin-bottom:20px;}
+.wl-sec h2 .o{color:var(--orange);}
+.wl-sec p{font-size:17px;color:var(--text2);max-width:440px;line-height:1.7;font-weight:300;margin:0 auto 48px;}
+.wl-form{display:flex;gap:10px;max-width:460px;margin:0 auto;flex-wrap:wrap;}
+.wl-form input{flex:1;min-width:220px;background:var(--surface);border:0.5px solid var(--border2);border-radius:99px;padding:14px 22px;font-size:15px;color:var(--text);font-family:var(--fb);outline:none;transition:border-color 0.2s;}
+.wl-form input::placeholder{color:var(--text3);}
+.wl-form input:focus{border-color:var(--orange);}
+.wl-form button{background:var(--orange);color:#fff;border:none;border-radius:99px;padding:14px 26px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--fd);transition:transform 0.15s,box-shadow 0.2s;white-space:nowrap;letter-spacing:0.02em;}
+.wl-form button:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(249,115,22,0.4);}
+.wl-note{font-size:12px;color:var(--text3);margin-top:16px;}
+
+/* FOOTER */
+footer{background:var(--bg);border-top:0.5px solid var(--border);padding:60px 5% 32px;}
+.foot-inner{max-width:1280px;margin:0 auto;}
+.foot-top{display:flex;justify-content:space-between;gap:48px;flex-wrap:wrap;margin-bottom:48px;}
+.foot-logo{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.foot-sub{font-family:var(--fm);font-size:10px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;}
+.foot-brand p{font-size:13px;color:var(--text3);max-width:240px;line-height:1.7;font-weight:300;margin-top:10px;}
+.foot-col h4{font-family:var(--fm);font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;}
+.foot-col a{display:block;font-size:14px;color:var(--text2);text-decoration:none;margin-bottom:10px;transition:color 0.2s;}
+.foot-col a:hover{color:var(--text);}
+.foot-bottom{border-top:0.5px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.foot-bottom p{font-size:12px;color:var(--text3);font-family:var(--fm);}
+.foot-legal{display:flex;gap:20px;}
+.foot-legal a{font-size:12px;color:var(--text3);text-decoration:none;}
+.foot-legal a:hover{color:var(--text2);}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.rv.in{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.1s;}.d2{transition-delay:0.2s;}.d3{transition-delay:0.3s;}
+
+@media(max-width:768px){.nav-links{display:none;}.hero h1{letter-spacing:-1.5px;}.bento-grid{display:flex;flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+  <defs>
+    <filter id="goo-hero">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9" result="goo"/>
+      <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+    </filter>
+  </defs>
+</svg>
+
+<nav id="nav">
+  <a href="#" class="nav-logo"><div class="nav-dot"></div>Artha</a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#invest">Invest</a>
+    <a href="#community">Squad</a>
+  </div>
+  <a href="#waitlist" class="nav-cta">Join waitlist →</a>
+</nav>
+
+<section class="hero" id="hero-sec">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-pixels" id="px-canvas" aria-hidden="true"></div>
+
+  <div class="hero-badge rv"><div class="badge-dot"></div>Now building · Bengaluru, India</div>
+  <h1 class="rv d1">Your financial<br/><span class="o">home base.</span><br/><span class="d">Built for teens.</span></h1>
+  <p class="hero-sub rv d2">Artha combines savings goals, squad challenges, expense splitting, and micro-investing — all in one app Gen Z will actually use.</p>
+  <div class="hero-ctas rv d3">
+    <a href="#waitlist" class="btn-p">Get early access →</a>
+    <a href="#how" class="btn-s">See how it works</a>
+  </div>
+  <div class="hero-ticker rv d3">
+    <div class="tick-lbl">LIVE</div>
+    <div class="tick-track">
+      <div class="tick-inner">
+        <span class="tick-item">Nifty 50 <span class="up">▲ 12.4%</span></span>
+        <span class="tick-item">Digital Gold <span class="up">▲ 9.1%</span></span>
+        <span class="tick-item">Liquid Fund <span class="up">▲ 6.8%</span></span>
+        <span class="tick-item">25Cr+ teens in India</span>
+        <span class="tick-item">Min invest <span class="up">₹100</span></span>
+        <span class="tick-item">SEBI registered</span>
+        <span class="tick-item">Nifty 50 <span class="up">▲ 12.4%</span></span>
+        <span class="tick-item">Digital Gold <span class="up">▲ 9.1%</span></span>
+        <span class="tick-item">Liquid Fund <span class="up">▲ 6.8%</span></span>
+        <span class="tick-item">25Cr+ teens in India</span>
+        <span class="tick-item">Min invest <span class="up">₹100</span></span>
+        <span class="tick-item">SEBI registered</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="mq-inner">
+    <span class="mq-item">Goal savings</span><span class="mq-item">Squad challenges</span><span class="mq-item">Split expenses</span><span class="mq-item">Micro-investing</span><span class="mq-item">Savings streaks</span><span class="mq-item">Parent dashboard</span><span class="mq-item">SEBI registered</span>
+    <span class="mq-item">Goal savings</span><span class="mq-item">Squad challenges</span><span class="mq-item">Split expenses</span><span class="mq-item">Micro-investing</span><span class="mq-item">Savings streaks</span><span class="mq-item">Parent dashboard</span><span class="mq-item">SEBI registered</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="sp" id="how">
+  <div class="wrap">
+    <div class="etag rv">Simple by design</div>
+    <h2 class="sh2 rv">Four steps to <span class="o">smarter money.</span></h2>
+    <p class="ssub rv">No jargon. No condescension. Just tools that work the way teens actually think.</p>
+    <div class="steps rv">
+      <div class="step"><div class="snum">01</div><div class="sico">📱</div><h3>Sign up in 2 min</h3><p>No bank account needed. Parents approve in one tap for investing. You're live immediately.</p></div>
+      <div class="step"><div class="snum">02</div><div class="sico">🎯</div><h3>Set your goals</h3><p>Create savings jars for anything — trip, gadget, course. Artha shows your weekly target to hit them.</p></div>
+      <div class="step"><div class="snum">03</div><div class="sico">🏆</div><h3>Build your squad</h3><p>Invite friends, start a challenge, and watch the leaderboard. Settle group expenses inside the same app.</p></div>
+      <div class="step"><div class="snum">04</div><div class="sico">📈</div><h3>Invest the surplus</h3><p>Hit a milestone? Artha suggests micro-funds matched to your timeline. One tap. Your money works harder.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- BENTO FEATURES -->
+<div style="padding:0 5% 100px;" id="features">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div class="etag rv">Everything you need</div>
+    <h2 class="sh2 rv">Built for the way <span class="o">teens actually live.</span></h2>
+    <div class="bento-grid rv">
+      <div class="bento b1" style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+        <div style="flex:1;min-width:180px;">
+          <div class="bico">🎯</div>
+          <h3>Goal Jars</h3>
+          <p>Visual savings goals for anything you want. Set a target, track your streak, celebrate milestones — watch your progress bar fill in real time.</p>
+        </div>
+        <div class="phone-mock">
+          <div class="phone-notch"></div>
+          <div class="phone-body">
+            <div class="bal-card">
+              <div class="bal-lbl">TOTAL SAVED</div>
+              <div class="bal-num">₹12,450</div>
+              <div class="stat-row">
+                <div class="stat-chip"><div class="sv">+₹2.1k</div><div class="sl">month</div></div>
+                <div class="stat-chip"><div class="sv">+8.2%</div><div class="sl">return</div></div>
+              </div>
+            </div>
+            <div class="gbar"><div class="gbar-row"><span>🎮 PS5</span><span>82%</span></div><div class="bar-t"><div class="bar-f" style="width:82%"></div></div></div>
+            <div class="gbar" style="margin-top:6px;"><div class="gbar-row"><span>✈️ Goa</span><span>38%</span></div><div class="bar-t"><div class="bar-f" style="width:38%;background:#6366F1;"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="bento b2">
+        <div class="bico">🏆</div>
+        <h3>Savings Leaderboard</h3>
+        <p>Monthly squad challenges with a live leaderboard. The social pressure of a friend beating you is the best motivation ever built.</p>
+        <div class="lb">
+          <div class="lb-row"><div class="lb-rank r1">1</div><div class="lb-name">Priya S.</div><div class="lb-amt">₹3,200</div></div>
+          <div class="lb-row" style="border-color:rgba(249,115,22,0.3);background:rgba(249,115,22,0.05);"><div class="lb-rank r2">2</div><div class="lb-name">You ✦</div><div class="lb-amt">₹2,910</div></div>
+          <div class="lb-row"><div class="lb-rank r3">3</div><div class="lb-name">Arjun K.</div><div class="lb-amt">₹2,340</div></div>
+        </div>
+      </div>
+      <div class="bento b3"><div class="bico">🧾</div><h3>Split & Settle</h3><p>Log shared expenses in seconds. Artha tracks who owes what and nudges owed money back into savings automatically.</p></div>
+      <div class="bento b4"><div class="bico">📈</div><h3>Micro-Investing</h3><p>SEBI-registered funds curated for teen goals. Start with ₹100. Parent approval built in for minors.</p></div>
+      <div class="bento b5"><div class="bico">🔥</div><h3>Savings Streaks</h3><p>Build daily saving habits and maintain streaks. Miss a day and your squad knows. Real accountability.</p></div>
+      <div class="bento b6"><div class="bico">🛡️</div><h3>Parent Dashboard</h3><p>Parents get a read-only view of goals and investments. Approve decisions in one tap. Full transparency, zero friction between teens and parents.</p></div>
+      <div class="bento b7" style="background:linear-gradient(135deg,rgba(249,115,22,0.06) 0%,rgba(99,102,241,0.05) 100%);"><div class="bico" style="background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.3);">💡</div><h3>Financial Education</h3><p>Bite-sized lessons embedded in the app flow. Learn about compound interest, risk, and diversification — right when it's relevant to a decision you're making. No lectures. Just context.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY + SPLIT -->
+<section class="comm-sec" id="community">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="margin-bottom:56px;">
+      <div class="etag rv">Social savings</div>
+      <h2 class="sh2 rv">Your squad keeps you <span class="o">honest.</span></h2>
+      <p class="ssub rv">Saving alone is hard. Saving while your friends watch your rank on a leaderboard is addictive.</p>
+    </div>
+    <div class="comm-grid">
+      <div class="rv">
+        <div class="squad-card">
+          <div class="squad-hdr"><div class="squad-title">College Buddies 🎓</div><div class="squad-badge">LIVE CHALLENGE</div></div>
+          <div class="squad-body">
+            <div class="squad-mem"><div class="mem-av ave">PR</div><div class="mem-info"><div class="mem-name">Priya S. 🥇</div><div class="mem-bar"><div class="mem-fill" style="width:100%"></div></div></div><div class="mem-amt">₹3,200</div></div>
+            <div class="squad-mem me"><div class="mem-av ava">RV</div><div class="mem-info"><div class="mem-name">You ✦</div><div class="mem-bar"><div class="mem-fill" style="width:91%"></div></div></div><div class="mem-amt">₹2,910</div></div>
+            <div class="squad-mem"><div class="mem-av avb">AK</div><div class="mem-info"><div class="mem-name">Arjun K. 🥉</div><div class="mem-bar"><div class="mem-fill" style="width:73%"></div></div></div><div class="mem-amt">₹2,340</div></div>
+            <div class="squad-mem"><div class="mem-av avd">MS</div><div class="mem-info"><div class="mem-name">Meera S.</div><div class="mem-bar"><div class="mem-fill" style="width:59%"></div></div></div><div class="mem-amt">₹1,890</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="rv d1">
+        <div class="split-card">
+          <div class="split-hdr"><h4>Split & Settle</h4><p>Like Splitwise — but your savings count</p></div>
+          <div class="split-body">
+            <div class="split-row"><div class="split-left"><div class="split-em">🍕</div><div><div class="split-name">Dominos</div><div class="split-sub">Split 5 ways</div></div></div><div class="green-amt">+₹168</div></div>
+            <div class="split-row"><div class="split-left"><div class="split-em">🎬</div><div><div class="split-name">PVR Movies</div><div class="split-sub">Arjun paid</div></div></div><div class="red-amt">−₹300</div></div>
+            <div class="split-row"><div class="split-left"><div class="split-em">🏏</div><div><div class="split-name">Cricket ground</div><div class="split-sub">You paid</div></div></div><div class="green-amt">+₹200</div></div>
+          </div>
+          <div style="padding:0 16px 16px;">
+            <div class="sum-row">
+              <div class="sum-chip sg"><div class="sum-lbl">You're owed</div><div class="sum-amt">₹368</div></div>
+              <div class="sum-chip sr"><div class="sum-lbl">You owe</div><div class="sum-amt">₹300</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVEST -->
+<section class="inv-sec" id="invest">
+  <div class="inv-grid">
+    <div class="rv">
+      <div class="etag">Micro-investing</div>
+      <h2 class="sh2">Put your savings<br/><span class="o">to work.</span></h2>
+      <p class="ssub" style="margin-bottom:0;">Hit a goal milestone? Artha suggests micro-funds matched to your goal's time horizon. Start with ₹100. SEBI-registered, parent-approved.</p>
+      <div class="ret-card">
+        <div class="ret-lbl">AVG. ANNUAL RETURN — NIFTY 50</div>
+        <div class="ret-num"><span>+</span>12.4<span>%</span></div>
+        <div class="ret-bar"><div class="ret-fill"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;"><span style="font-family:var(--fm);font-size:10px;color:var(--text3);">0%</span><span style="font-family:var(--fm);font-size:10px;color:var(--text3);">20%</span></div>
+      </div>
+    </div>
+    <div class="rv d1">
+      <div class="fund-list">
+        <div class="fund-row"><div class="fund-ico">📈</div><div class="fund-info"><div class="fn">Nifty 50 Index Fund</div><div class="ft">Equity · Long term (2+ yrs)</div><div class="rdots"><div class="rd on"></div><div class="rd on"></div><div class="rd on"></div><div class="rd"></div><div class="rd"></div></div></div><div class="ret-badge">+12.4%</div></div>
+        <div class="fund-row"><div class="fund-ico">🪙</div><div class="fund-info"><div class="fn">Digital Gold SIP</div><div class="ft">Commodity · Flexible</div><div class="rdots"><div class="rd on"></div><div class="rd on"></div><div class="rd on"></div><div class="rd"></div><div class="rd"></div></div></div><div class="ret-badge">+9.1%</div></div>
+        <div class="fund-row"><div class="fund-ico">🏦</div><div class="fund-info"><div class="fn">Liquid Debt Fund</div><div class="ft">Debt · Short term (3–6 mo)</div><div class="rdots"><div class="rd on"></div><div class="rd on"></div><div class="rd"></div><div class="rd"></div><div class="rd"></div></div></div><div class="ret-badge">+6.8%</div></div>
+      </div>
+      <div class="sebi">All investments via SEBI-registered AMFs. Parent/guardian approval required for users under 18. Past returns are indicative, not guaranteed.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="test-sec">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div class="etag rv">Early community</div>
+    <h2 class="sh2 rv">What teens <span class="o">actually say.</span></h2>
+    <div class="test-grid">
+      <div class="test-card rv"><div class="test-stars">★★★★★</div><p class="test-text">"I never saved a rupee before Artha. Now I'm 82% to my PS5 controller and Arjun is losing to me on the leaderboard. Best motivation ever."</p><div class="test-author"><div class="t-av ava">RV</div><div><div class="t-name">Rahul V., 17</div><div class="t-role">Class 12 · Bengaluru</div></div></div></div>
+      <div class="test-card rv d1"><div class="test-stars">★★★★★</div><p class="test-text">"The split feature alone is worth it. No more awkward 'who paid for the movie' arguments. And the savings challenge is genuinely addictive."</p><div class="test-author"><div class="t-av ave">PR</div><div><div class="t-name">Priya S., 18</div><div class="t-role">First year college · Mumbai</div></div></div></div>
+      <div class="test-card rv d2"><div class="test-stars">★★★★★</div><p class="test-text">"My daughter showed me Artha and I approved immediately. She's learning about mutual funds at 16. I didn't learn about investing until my 30s."</p><div class="test-author"><div class="t-av avc">SK</div><div><div class="t-name">Suresh K.</div><div class="t-role">Parent · Delhi</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="wl-sec" id="waitlist">
+  <div class="wl-inner">
+    <div class="etag rv" style="justify-content:center;display:inline-flex;margin:0 auto 20px;">Early access</div>
+    <h2 class="rv">Be first to<br/><span class="o">grow with Artha.</span></h2>
+    <p class="rv">Opening early access to teens and parents in Bengaluru first. No spam, ever.</p>
+    <form class="wl-form rv" onsubmit="handleWL(event)">
+      <input type="email" id="wl-email" placeholder="your@email.com" required/>
+      <button type="submit" id="wl-btn">Join waitlist</button>
+    </form>
+    <p class="wl-note rv" id="wl-ok" style="display:none;color:var(--orange);font-size:14px;">✓ You're on the list! We'll be in touch soon.</p>
+    <p class="wl-note rv">Early access members get lifetime free Pro tier. No credit card needed.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="foot-logo"><div class="nav-dot"></div>Artha</div>
+        <div class="foot-sub">Wealth · Purpose · Community</div>
+        <p>India's first social savings and investing app built for teenagers. Pre-seed · Bengaluru · 2025.</p>
+      </div>
+      <div class="foot-col"><h4>Product</h4><a href="#how">How it works</a><a href="#features">Features</a><a href="#invest">Investing</a><a href="#waitlist">Early access</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="#">About us</a><a href="#">Careers</a><a href="#">Co-founder search</a><a href="#">Press</a></div>
+      <div class="foot-col"><h4>Connect</h4><a href="#">LinkedIn</a><a href="#">Instagram</a><a href="#">Twitter / X</a><a href="mailto:hello@artha.in">hello@artha.in</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2025 Artha Fintech Pvt. Ltd. · Bengaluru, Karnataka, India</p>
+      <div class="foot-legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">SEBI Disclosure</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* REVEAL */
+const nav = document.getElementById('nav');
+const rvs = document.querySelectorAll('.rv');
+function chk() {
+  rvs.forEach(e => { if (e.getBoundingClientRect().top < window.innerHeight - 60) e.classList.add('in'); });
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+}
+window.addEventListener('scroll', chk, {passive:true});
+chk();
+
+/* WAITLIST */
+function handleWL(e) {
+  e.preventDefault();
+  const b = document.getElementById('wl-btn');
+  document.getElementById('wl-email').style.display = 'none';
+  b.textContent = '✓ You\'re in!'; b.style.background = '#22C55E'; b.disabled = true;
+  document.getElementById('wl-ok').style.display = 'block';
+}
+
+/* GOOEY PIXEL TRAIL */
+(function(){
+  const SZ = window.innerWidth < 768 ? 24 : 32;
+  const FADE = 700, DELAY = 90;
+  const hero = document.getElementById('hero-sec');
+  const canvas = document.getElementById('px-canvas');
+  if (!hero || !canvas) return;
+  let cols=0, rows=0, cells=[], timers=[], lc=-1, lr=-1;
+
+  function build(){
+    const W=hero.offsetWidth, H=hero.offsetHeight;
+    cols=Math.ceil(W/SZ); rows=Math.ceil(H/SZ);
+    canvas.innerHTML=''; cells=[]; timers=[];
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      const el=document.createElement('div');
+      el.className='px';
+      el.style.cssText=`left:${c*SZ}px;top:${r*SZ}px;width:${SZ}px;height:${SZ}px;`;
+      canvas.appendChild(el); cells.push(el); timers.push(null);
+    }
+  }
+
+  function light(c,r,op){
+    const i=r*cols+c;
+    if(i<0||i>=cells.length) return;
+    const el=cells[i];
+    if(timers[i]) clearTimeout(timers[i]);
+    el.style.transition='none'; el.style.opacity=op||'1';
+    timers[i]=setTimeout(()=>{ el.style.transition=`opacity ${FADE/1000}s ease`; el.style.opacity='0'; }, DELAY);
+  }
+
+  function onMove(cx,cy){
+    const rect=hero.getBoundingClientRect();
+    const c=Math.floor((cx-rect.left)/SZ), r=Math.floor((cy-rect.top)/SZ);
+    if(c===lc&&r===lr) return; lc=c; lr=r;
+    light(c,r,'1');
+    [[c-1,r],[c+1,r],[c,r-1],[c,r+1]].forEach(([nc,nr])=>{
+      if(nc>=0&&nr>=0&&nc<cols&&nr<rows) light(nc,nr,'0.3');
+    });
+  }
+
+  hero.addEventListener('mousemove',e=>onMove(e.clientX,e.clientY),{passive:true});
+  hero.addEventListener('touchmove',e=>{ const t=e.touches[0]; onMove(t.clientX,t.clientY); },{passive:true});
+  let rt; window.addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(build,250); });
+  build();
+})();
+</script>
+</body>
+</html>
